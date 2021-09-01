@@ -2,6 +2,7 @@ package org.ada.school.service;
 
 import org.ada.school.dto.UserDto;
 import org.ada.school.model.User;
+import org.ada.school.repository.UserDocument;
 import org.ada.school.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,33 +19,48 @@ public class UserServiceMongoDB implements UserService
     }
 
     @Override
-    public User create(User user )
+    public UserDocument create(UserDocument user )
     {
-        return null;
+
+        return userRepository.save(user);
     }
 
     @Override
-    public User findById( String id )
+    public UserDocument findById( String id )
     {
-        return null;
+
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<User> all()
+    public List<UserDocument> all()
     {
-        return null;
+
+        return userRepository.findAll();
     }
 
     @Override
     public boolean deleteById( String id )
     {
+
+        if (userRepository.existsById(id)){
+            userRepository.deleteById(id);
+            return true;
+        }
         return false;
     }
 
     @Override
-    public User update(UserDto userDto, String id )
+    public UserDocument update(UserDto userDto, String id )
     {
-        return null;
+       UserDocument usermodi =userRepository.findById(id).orElse(null);
+       if (usermodi!=null){
+           usermodi.update(userDto);
+           return  userRepository.save(usermodi);
+       }else{
+           throw new NullPointerException("The user you want to modify cannot be found");
+
+       }
     }
 }
 
