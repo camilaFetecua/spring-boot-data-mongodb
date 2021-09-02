@@ -1,5 +1,6 @@
 package org.ada.school.dto;
 
+
 public class UserDto
 {
     String name;
